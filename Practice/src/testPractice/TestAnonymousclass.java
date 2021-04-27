@@ -7,6 +7,7 @@ abstract class testAnonym implements Runnable{
 }
 interface testInterfaceAnonym{
 	void eat();
+	void drink();
 }
 public class TestAnonymousclass {
 	public static void main(String[] args) {
@@ -39,8 +40,18 @@ public class TestAnonymousclass {
 						+ "\n2. The object t2 can be used to call that implemented method");
 					
 			}
+			
+			@Override
+			public void drink() {
+				System.out.println("the Exmple to implement second method in a interface"
+						+"\n using the anonymous class");
+				
+				
+				
+			}
 		};
 		t2.eat();
+		t2.drink();
 	}
 
 }
