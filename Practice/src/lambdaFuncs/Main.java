@@ -9,41 +9,34 @@ import java.util.function.Predicate;
 
 public class Main {
 
-    public static void main(String[] args) {
-	List<Employee> employees = new ArrayList<Employee>();
-    employees.add(new Employee("Jijo Sanil",31));
-    employees.add(new Employee("Tom Boy",25));
-    employees.add(new Employee("Michael Scott", 40));
-    employees.add(new Employee("Harvey Specter",41));
-        Function<Employee, String> getLastName = employee -> {
-            return employee.getEmployeeName().substring(employee.getEmployeeName().indexOf(' '));
-        };
-        Function<Employee , String> getFirstname = employee -> {
-            return employee.getEmployeeName().substring(0,employee.getEmployeeName().indexOf(' '));
-        };
-        Random randBool = new Random();
-        if (randBool.nextBoolean())
-        {
-            printAname(getLastName, employees.get(0));
-        }
-        else{
-            printAname(getFirstname, employees.get(0));
-        }
+	public static void main(String[] args) {
+		List<Employee> employees = new ArrayList<Employee>();
+		employees.add(new Employee("Jijo Sanil",31));
+		employees.add(new Employee("Tom Boy",25));
+		employees.add(new Employee("Michael Scott", 40));
+		employees.add(new Employee("Harvey Specter",41));
+		Function<Employee, String> getLastName = employee -> {
+			return employee.getEmployeeName().substring(employee.getEmployeeName().indexOf(' '));
+		};
+		Function<Employee , String> getFirstname = employee -> {
+			return employee.getEmployeeName().substring(0,employee.getEmployeeName().indexOf(' '));
+		};
+		Random randBool = new Random();
+		for (Employee employee : employees) {
+			if (randBool.nextBoolean())
+			{
+				printAname(getLastName, employee);
+			}
+			else{
+				printAname(getFirstname, employee);
+			}
+		}
 
-
-
-
-
-
-
-
-
-
-   // employees.forEach((Employee employee) -> {
-    //    System.out.println("Employee Name : "+ employee.getEname());
-    //    System.out.println("Employee Age : "+ employee.getAge());
-   // });
-        /*
+		// employees.forEach((Employee employee) -> {
+		//    System.out.println("Employee Name : "+ employee.getEname());
+		//    System.out.println("Employee Age : "+ employee.getAge());
+		// });
+		/*
         printEmpOnCondition12(employees,
                 "age above 30",
                 employee -> employee.getAge()>30);
@@ -57,20 +50,20 @@ public class Main {
         System.out.println(greaterthan15.and(lessthan100).test(50));
         System.out.println(greaterthan15.or(lessthan100).test(10));
 
-         */
-   }
-   private static void printAname(Function<Employee,String> getname, Employee employee){
-       System.out.println(getname.apply(employee));
-   }
-   private static void printEmpOnCondition12(List<Employee> employees , String cond , Predicate<Employee>
-                                          ageCondition){
-       System.out.println(cond);
-       System.out.println("==================");
-       for (Employee employee : employees){
-           if(ageCondition.test(employee)){
-               System.out.println(employee.getEmployeeName());
-           }
-       }
-   }
+		 */
+	}
+	private static void printAname(Function<Employee,String> getname, Employee employee){
+		System.out.println(getname.apply(employee));
+	}
+	private static void printEmpOnCondition12(List<Employee> employees , String cond , Predicate<Employee>
+	ageCondition){
+		System.out.println(cond);
+		System.out.println("==================");
+		for (Employee employee : employees){
+			if(ageCondition.test(employee)){
+				System.out.println(employee.getEmployeeName());
+			}
+		}
+	}
 }
 
