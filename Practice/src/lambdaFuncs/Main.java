@@ -31,26 +31,30 @@ public class Main {
 				printAname(getFirstname, employee);
 			}
 		}
-
-		// employees.forEach((Employee employee) -> {
-		//    System.out.println("Employee Name : "+ employee.getEname());
-		//    System.out.println("Employee Age : "+ employee.getAge());
-		// });
-		/*
+		
+		//For Each using the lambda
+		 employees.forEach((Employee employee) -> {
+		    System.out.println("Employee Name : "+ employee.getEmployeeName());
+		    System.out.println("Employee Age : "+ employee.getAge());
+		 });
+		
+		//Passing the Predicate as parameter 
         printEmpOnCondition12(employees,
                 "age above 30",
                 employee -> employee.getAge()>30);
         printEmpOnCondition12(employees,"Employees with age below 30",employee -> employee.getAge()<=30);
 
+        
+        //Examples of the Type Predicates
         IntPredicate greaterthan15 = i -> i > 15 ;
         IntPredicate lessthan100 = i -> i < 100;
         System.out.println(greaterthan15.test(25));
         System.out.println(lessthan100.test(120));
-        //combining 2 predicates
+        //Chaining of the predicates
         System.out.println(greaterthan15.and(lessthan100).test(50));
         System.out.println(greaterthan15.or(lessthan100).test(10));
 
-		 */
+		 
 	}
 	private static void printAname(Function<Employee,String> getname, Employee employee){
 		System.out.println(getname.apply(employee));
