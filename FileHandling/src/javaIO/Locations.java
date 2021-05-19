@@ -1,6 +1,10 @@
 package javaIO;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,49 +19,37 @@ public class Locations implements Map<Integer, Location> {
 
 	public static void main(String args[]) throws IOException{
 			
-//		FileWriter locfile = null;
-//		try {
-//			locfile = new FileWriter("locations.txt");
-//			for(Location loc : locations.values()) {
-//				locfile.write(loc.getLocationID()+"  "+loc.getDescription()+",\n");
-//			}
-//
-//		}finally {
-//			System.out.println("In the Finally Block");
-//
-//			if (locfile != null)
-//			{
-//				System.out.println("closing the File object");
-//				locfile.close();
-//			}
-//
-//		}
-		//Above code with try-with-resources
-//		try(FileWriter locfile = new FileWriter("locations.txt");
-//			FileWriter dirfile = new FileWriter("directions.txt")){
-//			for (Location location : locations.values()) {
-//				locfile.write(location.getLocationID()+","+location.getDescription()+"\n");
-//				for(String directions : location.getExits().keySet()) {
-//					dirfile.write(location.getLocationID()+","+directions+","+location.getExits().get(directions)+"\n");
-//				}
-//			}
-//		}
+		try(DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("locations.dat")))){
+			for (Location location : locations.values()) {
+				dos.writeInt(location.getLocationID());
+				dos.writeUTF(location.getDescription());
+				for(String exits : location.getExits().keySet()) {
+					dos.writeUTF(exits);
+					dos.writeInt(location.getExits().get(exits));
+				}
+			}
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 
 	private static Map<Integer , Location> locations = new HashMap<Integer, Location>();
 	static {
 		 
-		try(Scanner scanner = new Scanner(new FileReader("locations.txt"))){
+		try(BufferedReader br = new BufferedReader(new FileReader("locations_big.txt"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("locations.txt"))){
 			
-			scanner.useDelimiter(",");
-			while(scanner.hasNextInt()) {
-			int loc = scanner.nextInt();
-			scanner.skip(scanner.delimiter());
-			String description = scanner.nextLine();
+			String input;
+			while((input=br.readLine())!=null) {
+			String[] data = input.split(",");
+			int loc = Integer.parseInt(data[0]);
+			String description = data[1];
 			System.out.println("Imported Loc"+loc+":"+description);
 			Map<String , Integer> tempexits = new HashMap<String, Integer>();
 			locations.put(loc, new Location(loc, description, tempexits));
+			bw.write(input+"\n");
 			}
 			
 		}catch(IOException e  ){
@@ -65,7 +57,8 @@ public class Locations implements Map<Integer, Location> {
 			
 		}		
 		//Now trying to read the exits
-		try(BufferedReader br = new BufferedReader(new FileReader("directions.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("directions_big.txt"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("directions.txt"))) {
 			String input;
 			
 			while((input=br.readLine())!=null) {
@@ -83,6 +76,7 @@ public class Locations implements Map<Integer, Location> {
 				System.out.println(loc+","+direction+" "+destination);
 				Location location = locations.get(loc);
 				location.addExist(direction, destination);
+				bw.write(input+"\n");
 			}
 
 		}catch(IOException e) {
